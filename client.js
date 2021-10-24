@@ -48,8 +48,8 @@ var bodyParser = require('body-parser');
 
 // Yes, TLS is required
 const serverConfig = {
-    key: fs.readFileSync('/etc/letsencrypt/live/webtel.jacos-cloud.com/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/webtel.jacos-cloud.com/fullchain.pem'),
+    key: fs.readFileSync('/etc/privkey.pem'),
+    cert: fs.readFileSync('/etc/fullchain.pem'),
 };
 
 var serviceAccount = require("/var/www/html/rtc/firebase.json");
