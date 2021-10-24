@@ -47,12 +47,12 @@ var bodyParser = require('body-parser');
 
 
 // Yes, TLS is required
-const serverConfig = {
-    key: fs.readFileSync('https://webtel-test.herokuapp.com/etc/privkey.pem'),
-    cert: fs.readFileSync('https://webtel-test.herokuapp.com/etc/fullchain.pem'),
-};
+//const serverConfig = {
+//    key: fs.readFileSync('/etc/letsencrypt/live/webtel.jacos-cloud.com/privkey.pem'),
+//    cert: fs.readFileSync('/etc/letsencrypt/live/webtel.jacos-cloud.com/fullchain.pem'),
+//};
 
-var serviceAccount = require("https://webtel-test.herokuapp.com/firebase.json");
+var serviceAccount = require("/var/www/html/rtc/firebase.json");
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://jacosphone.firebaseio.com"
@@ -89,15 +89,16 @@ const handleRequest = function (request, response) {
 };
 
 
-const httpsServer = https.createServer(serverConfig, handleRequest);
-httpsServer.listen(HTTPS_PORT, '0.0.0.0');
+//const httpsServer = https.createServer(serverConfig, handleRequest);
+//httpsServer.listen(HTTPS_PORT, '0.0.0.0');
 
 // ----------------------------------------------------------------------------------------
 
 // Create a server for handling websocket calls
-const wss = new WebSocketServer({
-    server: httpsServer
-});
+//const wss = new WebSocketServer({
+//    server: httpsServer
+//});
+const wss = new WebSocket('wss://webtel.jacos-cloud.com:9090');
 
 //all connected to the server users
 var users = {};
@@ -107,7 +108,7 @@ var onlineUsers = [];
 //send users to client
 
 
-const httpsServerNext = https.createServer(serverConfig, app);
+//const httpsServerNext = https.createServer(serverConfig, app);
 
 
 
@@ -128,9 +129,9 @@ db.connect((err) => {
 logger.info('mysql connected....');
 });
 
-httpsServerNext.listen(3000, () => {
-    logger.info('server started at port 3000');
-});
+//httpsServerNext.listen(3000, () => {
+//    logger.info('server started at port 3000');
+//});
 
 //when a user connects to our sever
 wss.on('connection', function (connection) {
