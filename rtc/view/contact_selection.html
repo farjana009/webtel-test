@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>接触荷重。</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, user-scalable=no"/>
+    <link rel="manifest" href="../manifest.json"/>
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="../css/materialize.css" media="screen,projection"/>
+    <link rel="stylesheet" type="text/css" href="../css/custom.css?v=9">
+    <link rel="stylesheet" type="text/css" href="../css/custom/landing-page.css?v=9">
+    <!--<link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />-->
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/materialize.js"></script>
+    <script src="../js/sweetalert.min.js"></script>
+
+    <style>
+        .call-option-button {
+            width: 95%;
+            height: 80px;
+            line-height: 80px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <select style="display: none;" id="audioOutput"></select>
+</div>
+<div id="callPage" class="call-page" style="padding: 0; min-height: 100vh;">
+
+    <div class="row" style="height: 100%;margin: 0">
+        <div class="col s4 l4 m4"></div>
+        <div class="col s12 m4 l4  z-depth-1 card-panel"
+             style="min-height: 100vh;padding: 0;margin: 0;background: #E6E6E6;">
+            <div class="row" style="margin: 0">
+                <div class="row">
+                    <div class="col m12 s12 "
+                         style="position: relative;background: #918283;display: flex;padding: 10px;">
+                        <img src="./rsc/contacts_title_img.png" alt="" height="65">
+                        <img onclick="javascript:history.back()" src="./rsc/go_back_btn.png" alt=""
+                             style="position: absolute;right: 3px;top : 4px;cursor: pointer" height="50">
+                    </div>
+                </div>
+
+            </div>
+            <div class="row" style="margin-bottom: 10px" id="contact-load-button">
+                <div class="col s12 m12 l12 center " style="margin-bottom: 5px;padding-left: 0;">
+                    <a class=" waves-effect waves-light btn-large" id="get-contact-list"
+                       style="width: 140px;font-size: 16px;height: 30px;line-height: 33px;border-radius: 0;float: right;">連絡先をロード</a>
+                </div>
+
+            </div>
+
+            <div class="row" id="contact-list-view">
+                <!--                <div onclick="viewCallOption(this)"  data-tel="01687855988"  data-name="Oni" class="col s12 l12 make-call-to-phone" style="position: relative;cursor: pointer ;border-bottom: 1px solid #5c5a5a;padding-top: 10px;padding-left: 20px;padding-bottom: 20px" >-->
+                <!--                    <div style="font-size: 18px">Oni</div>-->
+                <!--                    <div style="font-size: 18px" id="01687855988">01687855988</div>-->
+                <!--                </div>-->
+                <div class="col s12 l12 make-call-to-phone"
+                     style="position: relative;cursor: pointer ;border-bottom: 1px solid #c5c3c3;padding-left: 20px">
+                    <div style="font-size: 12px;color:#ff5f5f">&nbsp;</div>
+                </div>
+            </div>
+
+
+            <div class="row custom-font" style="margin-bottom: 10px;position:relative;" id="contact-selection-button">
+                <div class="tooltiptext"></div>
+                <div class="col s3 m3 l3 center tooltip" style="margin-bottom: 10px;padding: 0 3px"
+                     id="company_contact">
+                    <a onclick="pageView('contact.html?user_mobile_number=','1')" data-id="company_contact"
+                       class=" waves-effect waves-light btn-large tooltip"
+                       style="width: 80%;">会
+                    </a>
+                </div>
+                <div class="col s3 m3 l3 center" style="margin-bottom: 10px;padding: 0 3px" id="personal_contact">
+                    <a onclick="pageView('contact.html?user_mobile_number=','2')"
+                       class=" waves-effect waves-light btn-large" data-id="personal_contact" style=" width: 80%;">個</a>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+<script src="../js/app/landing-page.js?v=999999254175845865"></script>
+<script>
+
+    function ownNumberRegistrationModal() {
+        $('#mymodal33').modal();
+        $('#mymodal33').modal('open');
+    }
+
+    function ownNumberRegistrationModalClose() {
+        $('#mymodal33').modal('close');
+    }
+
+    function ownNumberRegistrationCheck() {
+        if (!localStorage.getItem("myNumber")) {
+            ownNumberRegistrationModal()
+        } else {
+
+        }
+    }
+
+    function ownNumberRegistration() {
+        var name = document.getElementById("userNameToAdd").value;
+        var number = document.getElementById("userNumberToAdd").value;
+        if (name === "" || number === "") {
+            swal("お名前と電話番号を\n入力してください。");
+        } else {
+            let myContact = {
+                name : name,
+                number : number
+            }
+            localStorage.setItem("myNumber",JSON.stringify(myContact))
+            location.href = 'contact-load.html?type='+type+'&user_mobile_number='+number
+        }
+    }
+</script>
+
+</body>
+</html>
