@@ -491,13 +491,13 @@
         if (name === "" || number === "") {
             swal("お名前と電話番号を\n入力してください。");
         } else {
-            addSingleUserDB(name,number);
-//            let myContact = {
-//                name : name,
-//                number : number
-//            }
-//            localStorage.setItem("myNumber",JSON.stringify(myContact))
-//            location.href = '?user_mobile_number='+number
+            //addSingleUserDB(name,number);
+            let myContact = {
+                name : name,
+                number : number
+            }
+            localStorage.setItem("myNumber",JSON.stringify(myContact))
+            location.href = '?user_mobile_number='+number
 
         }
     }

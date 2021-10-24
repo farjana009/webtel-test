@@ -47,16 +47,16 @@ var bodyParser = require('body-parser');
 
 
 // Yes, TLS is required
-const serverConfig = {
-    key: fs.readFileSync('/etc/letsencrypt/live/webtel.dev.jacos.jp/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/webtel.dev.jacos.jp/fullchain.pem'),
-};
+//const serverConfig = {
+//    key: fs.readFileSync('/etc/letsencrypt/live/webtel.dev.jacos.jp/privkey.pem'),
+//    cert: fs.readFileSync('/etc/letsencrypt/live/webtel.dev.jacos.jp/fullchain.pem'),
+//};
 
-var serviceAccount = require("/var/www/html/rtc/firebase.json");
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://jacosphone.firebaseio.com"
-});
+//var serviceAccount = require("/var/www/html/rtc/firebase.json");
+//admin.initializeApp({
+//    credential: admin.credential.cert(serviceAccount),
+//    databaseURL: "https://jacosphone.firebaseio.com"
+//});
 var userIsBusy;
 
 
@@ -111,22 +111,22 @@ const httpsServerNext = https.createServer(serverConfig, app);
 
 
 
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Rasel#22386779',
-    database: 'free_call',
-    timezone: 'utc'
+//const db = mysql.createConnection({
+//    host: 'localhost',
+//    user: 'root',
+//    password: 'Rasel#22386779',
+//    database: 'free_call',
+//    timezone: 'utc'
+//
+//});
 
-});
 
-
-db.connect((err) => {
-    if (err) {
-    throw err;
-}
-logger.info('mysql connected....');
-});
+//db.connect((err) => {
+//    if (err) {
+//    throw err;
+//}
+//logger.info('mysql connected....');
+//});
 
 httpsServerNext.listen(3000, () => {
     logger.info('server started at port 3000');

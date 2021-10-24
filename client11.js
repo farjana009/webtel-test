@@ -1037,7 +1037,7 @@ function makeCallRootFunction(useId) {
 
 
     }
-    window.history.replaceState(null, null, "https://webtel.dev.jacos.jp/rtc/index.html?user_mobile_number=" + jacosUserId);
+    window.history.replaceState(null, null, "https://webtel-test.herokuapp.com/index.html?user_mobile_number=" + jacosUserId);
 
 
 }
