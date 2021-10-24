@@ -63,7 +63,7 @@ var configuration = {
         'urls': 'stun:stun.l.google.com:19302'
     },
         {
-            urls: "turn:webtel.dev.jacos.jp",
+            urls: "turn:webtel.jacos-cloud.com",
             username: "username1",
             credential: "password1"
         }
@@ -149,7 +149,7 @@ function hasUserMedia() {
 reloadSocketConnection();
 
 function reloadSocketConnection() {
-    conn = new WebSocket('wss://webtel.dev.jacos.jp:9090');
+    conn = new WebSocket('wss://webtel.jacos-cloud.com:9090');
 
     conn.onopen = function () {
 

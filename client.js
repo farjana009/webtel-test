@@ -47,16 +47,16 @@ var bodyParser = require('body-parser');
 
 
 // Yes, TLS is required
-//const serverConfig = {
-//    key: fs.readFileSync('/etc/letsencrypt/live/webtel.dev.jacos.jp/privkey.pem'),
-//    cert: fs.readFileSync('/etc/letsencrypt/live/webtel.dev.jacos.jp/fullchain.pem'),
-//};
+const serverConfig = {
+    key: fs.readFileSync('/etc/letsencrypt/live/webtel.jacos-cloud.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/webtel.jacos-cloud.com/fullchain.pem'),
+};
 
-//var serviceAccount = require("/var/www/html/rtc/firebase.json");
-//admin.initializeApp({
-//    credential: admin.credential.cert(serviceAccount),
-//    databaseURL: "https://jacosphone.firebaseio.com"
-//});
+var serviceAccount = require("/var/www/html/rtc/firebase.json");
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://jacosphone.firebaseio.com"
+});
 var userIsBusy;
 
 
@@ -111,22 +111,22 @@ const httpsServerNext = https.createServer(serverConfig, app);
 
 
 
-//const db = mysql.createConnection({
-//    host: 'localhost',
-//    user: 'root',
-//    password: 'Rasel#22386779',
-//    database: 'free_call',
-//    timezone: 'utc'
-//
-//});
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'Rasel#22386779',
+    database: 'free_call',
+    timezone: 'utc'
+
+});
 
 
-//db.connect((err) => {
-//    if (err) {
-//    throw err;
-//}
-//logger.info('mysql connected....');
-//});
+db.connect((err) => {
+    if (err) {
+    throw err;
+}
+logger.info('mysql connected....');
+});
 
 httpsServerNext.listen(3000, () => {
     logger.info('server started at port 3000');
@@ -711,7 +711,7 @@ function sendMailToUser(mail, name) {
         to: mail,
         subject: userNamee + 'さんがあなたに電話しています ' + datetime.getHours() + ":" + (datetime.getMinutes() < 10 ? '0' : '') + datetime.getMinutes(),
         //text: 'please log in to https://dhakajacos.tk:8081/call/ your friend '+connection.name +" is waiting.."
-        html: '<body><div class="col s12 m3"><div><div style=" border-radius: 10px; border: 2px solid black; background-color: #fff; padding: 10px; color: black margin: auto; width: 50%; padding: 10px;"> <p>失礼いたします。' + userNamee + 'さんです。 <br>今から電話してよろしいでしょうか。<br><b>IOSの場合は、<br>「Safariブラウザ」を使用してください。</b><br>よろしくお願いいたします。  </p>  <a href="https://webtel.dev.jacos.jp/rtc/index.html?Use_Id=' + name + '&user_mobile_number=' + senderNumber + '" target="_blank" style=" margin-right: 8px; text-decoration: none !important; border-radius: 8px; border: 2px solid blue;  background-color: #b3ffb3;  padding: 10px 10px !important;        color: #000;        line-height: 30px;  letter-spacing: 0;">いますぐＯＫ     </a>     <a  href="https://webtel.dev.jacos.jp/rtc/index.html?Use_Id=' + name + '&Me=busy' + '&user_mobile_number=' + senderNumber + '" target="_blank" style="  background-color: #fdeada; text-decoration: none !important;   border-radius: 8px;     border: 2px solid blue;         color: #000;      line-height: 30px;        padding: 10px 10px !important;    letter-spacing: 0;">後にしてください</a>     </div> <div style="height: 20px;width: 100%"></div></div> </div> </body>'
+        html: '<body><div class="col s12 m3"><div><div style=" border-radius: 10px; border: 2px solid black; background-color: #fff; padding: 10px; color: black margin: auto; width: 50%; padding: 10px;"> <p>失礼いたします。' + userNamee + 'さんです。 <br>今から電話してよろしいでしょうか。<br><b>IOSの場合は、<br>「Safariブラウザ」を使用してください。</b><br>よろしくお願いいたします。  </p>  <a href="https://webtel.jacos-cloud.com/rtc/index.html?Use_Id=' + name + '&user_mobile_number=' + senderNumber + '" target="_blank" style=" margin-right: 8px; text-decoration: none !important; border-radius: 8px; border: 2px solid blue;  background-color: #b3ffb3;  padding: 10px 10px !important;        color: #000;        line-height: 30px;  letter-spacing: 0;">いますぐＯＫ     </a>     <a  href="https://webtel.jacos-cloud.com/rtc/index.html?Use_Id=' + name + '&Me=busy' + '&user_mobile_number=' + senderNumber + '" target="_blank" style="  background-color: #fdeada; text-decoration: none !important;   border-radius: 8px;     border: 2px solid blue;         color: #000;      line-height: 30px;        padding: 10px 10px !important;    letter-spacing: 0;">後にしてください</a>     </div> <div style="height: 20px;width: 100%"></div></div> </div> </body>'
     });
     logger.info("mail sent to :" + mail);
 
