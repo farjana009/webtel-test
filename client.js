@@ -36,8 +36,6 @@ transports: [
     }),
     new winston.transports.File({
         filename: 'combined.log',
-        maxFiles: '7d',
-        maxsize: 10000000,//10MB
         timestamp: true
     })
 ]
@@ -52,11 +50,11 @@ const serverConfig = {
     cert: fs.readFileSync('cert.pem'),
 };
 
-var serviceAccount = require("firebase.json");
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://jacosphone.firebaseio.com"
-});
+//var serviceAccount = require("firebase.json");
+//admin.initializeApp({
+//    credential: admin.credential.cert(serviceAccount),
+//    databaseURL: "https://jacosphone.firebaseio.com"
+//});
 var userIsBusy;
 
 
