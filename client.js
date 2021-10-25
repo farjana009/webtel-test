@@ -74,6 +74,11 @@ const handleRequest = function (request, response) {
             'Content-Type': 'text/html'
         });
         response.end(fs.readFileSync('index.html'));
+    }else if (request.url === '/') {
+        response.writeHead(200, {
+            'Content-Type': 'text/javascript'
+        });
+        response.end(fs.readFileSync('index.html'));
     } else if (request.url === 'client11.js') {
         response.writeHead(200, {
             'Content-Type': 'application/javascript'
