@@ -1,26 +1,26 @@
 const HTTPS_PORT = 9090;
 
 const fs = require('fs');
-const https = require('http');
+const https = require('https');
 const WebSocket = require('ws');
-//const express = require('express');
-//const app = express();
-//const JSON = require('circular-json');
-//const mysql = require('mysql');
+const express = require('express');
+const app = express();
+const JSON = require('circular-json');
+const mysql = require('mysql');
 const winston = require('winston');
 var cors = require('cors');
 const WebSocketServer = WebSocket.Server;
-//var admin = require('firebase-admin');
-//var nodemailer = require('nodemailer');
-//var transporter = nodemailer.createTransport({
-//    host: 'smtp.gmail.com',
-//    port: 465,
-//    secure: true,
-//    auth: {
-//        user: 'potaconfreecall@gmail.com',
-//        pass: 'jacos6571'
-//    }
-//});
+var admin = require('firebase-admin');
+var nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: 'potaconfreecall@gmail.com',
+        pass: 'jacos6571'
+    }
+});
 var logger = winston.createLogger({
     format: winston.format.combine(
         winston.format.timestamp({
@@ -43,20 +43,20 @@ transports: [
 ]
 });
 
-//var bodyParser = require('body-parser');
+var bodyParser = require('body-parser');
 
 
 // Yes, TLS is required
-//const serverConfig = {
-//    key: fs.readFileSync('/etc/letsencrypt/live/webtel.jacos-cloud.com/privkey.pem'),
-//    cert: fs.readFileSync('/etc/letsencrypt/live/webtel.jacos-cloud.com/fullchain.pem'),
-//};
+const serverConfig = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem'),
+};
 
-//var serviceAccount = require("/var/www/html/rtc/firebase.json");
-//admin.initializeApp({
-//    credential: admin.credential.cert(serviceAccount),
-//    databaseURL: "https://jacosphone.firebaseio.com"
-//});
+var serviceAccount = require("firebase.json");
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://jacosphone.firebaseio.com"
+});
 var userIsBusy;
 
 
@@ -89,16 +89,15 @@ const handleRequest = function (request, response) {
 };
 
 
-//const httpsServer = https.createServer(serverConfig, handleRequest);
-//httpsServer.listen(HTTPS_PORT, '0.0.0.0');
+const httpsServer = https.createServer(serverConfig, handleRequest);
+httpsServer.listen(HTTPS_PORT, '0.0.0.0');
 
 // ----------------------------------------------------------------------------------------
 
 // Create a server for handling websocket calls
-//const wss = new WebSocketServer({
-//    server: httpsServer
-//});
-const wss = new WebSocket('wss://webtel.jacos-cloud.com:9090');
+const wss = new WebSocketServer({
+    server: httpsServer
+});
 
 //all connected to the server users
 var users = {};
@@ -108,30 +107,30 @@ var onlineUsers = [];
 //send users to client
 
 
-//const httpsServerNext = https.createServer(serverConfig, app);
+const httpsServerNext = https.createServer(serverConfig, app);
 
 
 
-//const db = mysql.createConnection({
-//    host: 'localhost',
-//    user: 'root',
-//    password: 'Rasel#22386779',
-//    database: 'free_call',
-//    timezone: 'utc'
-//
-//});
-//
-//
-//db.connect((err) => {
-//    if (err) {
-//    throw err;
-//}
-//logger.info('mysql connected....');
-//});
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'Rasel#22386779',
+    database: 'free_call',
+    timezone: 'utc'
 
-//httpsServerNext.listen(3000, () => {
-//    logger.info('server started at port 3000');
-//});
+});
+
+
+db.connect((err) => {
+    if (err) {
+    throw err;
+}
+logger.info('mysql connected....');
+});
+
+httpsServerNext.listen(3000, () => {
+    logger.info('server started at port 3000');
+});
 
 //when a user connects to our sever
 wss.on('connection', function (connection) {
@@ -712,7 +711,7 @@ function sendMailToUser(mail, name) {
         to: mail,
         subject: userNamee + 'さんがあなたに電話しています ' + datetime.getHours() + ":" + (datetime.getMinutes() < 10 ? '0' : '') + datetime.getMinutes(),
         //text: 'please log in to https://dhakajacos.tk:8081/call/ your friend '+connection.name +" is waiting.."
-        html: '<body><div class="col s12 m3"><div><div style=" border-radius: 10px; border: 2px solid black; background-color: #fff; padding: 10px; color: black margin: auto; width: 50%; padding: 10px;"> <p>失礼いたします。' + userNamee + 'さんです。 <br>今から電話してよろしいでしょうか。<br><b>IOSの場合は、<br>「Safariブラウザ」を使用してください。</b><br>よろしくお願いいたします。  </p>  <a href="https://webtel.jacos-cloud.com/rtc/index.html?Use_Id=' + name + '&user_mobile_number=' + senderNumber + '" target="_blank" style=" margin-right: 8px; text-decoration: none !important; border-radius: 8px; border: 2px solid blue;  background-color: #b3ffb3;  padding: 10px 10px !important;        color: #000;        line-height: 30px;  letter-spacing: 0;">いますぐＯＫ     </a>     <a  href="https://webtel.jacos-cloud.com/rtc/index.html?Use_Id=' + name + '&Me=busy' + '&user_mobile_number=' + senderNumber + '" target="_blank" style="  background-color: #fdeada; text-decoration: none !important;   border-radius: 8px;     border: 2px solid blue;         color: #000;      line-height: 30px;        padding: 10px 10px !important;    letter-spacing: 0;">後にしてください</a>     </div> <div style="height: 20px;width: 100%"></div></div> </div> </body>'
+        html: '<body><div class="col s12 m3"><div><div style=" border-radius: 10px; border: 2px solid black; background-color: #fff; padding: 10px; color: black margin: auto; width: 50%; padding: 10px;"> <p>失礼いたします。' + userNamee + 'さんです。 <br>今から電話してよろしいでしょうか。<br><b>IOSの場合は、<br>「Safariブラウザ」を使用してください。</b><br>よろしくお願いいたします。  </p>  <a href="https://webtel.dev.jacos.jp/rtc/index.html?Use_Id=' + name + '&user_mobile_number=' + senderNumber + '" target="_blank" style=" margin-right: 8px; text-decoration: none !important; border-radius: 8px; border: 2px solid blue;  background-color: #b3ffb3;  padding: 10px 10px !important;        color: #000;        line-height: 30px;  letter-spacing: 0;">いますぐＯＫ     </a>     <a  href="https://webtel.dev.jacos.jp/rtc/index.html?Use_Id=' + name + '&Me=busy' + '&user_mobile_number=' + senderNumber + '" target="_blank" style="  background-color: #fdeada; text-decoration: none !important;   border-radius: 8px;     border: 2px solid blue;         color: #000;      line-height: 30px;        padding: 10px 10px !important;    letter-spacing: 0;">後にしてください</a>     </div> <div style="height: 20px;width: 100%"></div></div> </div> </body>'
     });
     logger.info("mail sent to :" + mail);
 
@@ -720,10 +719,226 @@ function sendMailToUser(mail, name) {
 }
 
 // configure the app to use bodyParser()
-//app.use(bodyParser.urlencoded({
-//    extended: true
-//}));
-//app.use(bodyParser.json());
-//app.use(cors());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
+app.use(cors());
 
 
+app.get('/get_all_users/:contacts_owner', function (req, res) {
+
+
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    logger.info("get_all_users request owner: " + req.params.contacts_owner);
+
+    let sql = 'SELECT * FROM free_call.users UNION SELECT id As idusers, contact_name As name, REPLACE(contact_telnum,"-","") As mobile_number,contact_mail As mail FROM free_call.contacts where contact_owner=?';
+    db.query(sql, req.params.contacts_owner,function (error, results) {
+        if (error) throw error;
+        potaconFreeCallUsers = results;
+        res.send(results);
+
+    });
+});
+
+app.post('/addUser', function (req, res) {
+
+
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    //  console.log("check it .."+JSON.stringify(req.body));
+    let post = {
+        name: req.body["name"],
+        mobile_number: req.body["mobile_number"],
+        mail: "jacos.hr@gmail.com"
+    };
+    let sql = 'INSERT INTO users SET ?';
+    db.query(sql, post, function (error, results) {
+        if (error) throw error;
+
+        res.send("ok");
+
+    });
+
+
+
+});
+
+app.post('/checkUserExistInDb', function (req, res) {
+
+//    let user_exist=[];
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    //  console.log("check it .."+JSON.stringify(req.body));
+//    let post1 = {
+//        mobile_number:req.body["mobile_number"]
+//    };
+    var mobile_number=req.body.mobile_number;
+    try {
+        let sql1 = 'SELECT * FROM users WHERE mobile_number = '+mysql.escape(mobile_number);
+        db.query(sql1, [mobile_number], function (error, results) {
+            if (error) throw error;
+            if (results.length > 0) {
+
+//        res.send("ok");
+            res.json({
+                message:"user exist",
+                user_exist:results[0]["idusers"]
+            });
+            }else{
+                res.json({
+                    message:"user not exist",
+                    user_exist:"NO"
+                });
+            }
+
+        });
+
+    } catch (error) {
+        logger.info("error: " + error);
+        res.json({
+            message:"NG"
+        });
+    }
+
+});
+
+app.post('/addUserPhoneBook', function (req, res) {
+
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    logger.info("addUserPhoneBook request owner: " + req.body.contact_owner);
+//    console.log("addUserPhoneBook request body: " + JSON.stringify(req.body));
+
+
+//    var PhoneBookData = [];
+
+//    for (let i = 0; i < req.body.company_contacts.length; i++) {
+//        PhoneBookData.push(new Array(req.body["user_id"], req.body["company_contacts"][i].name, req.body["company_contacts"][i].tel, req.body["contact_email"],req.body["contact_owner"]));
+        let PhoneBookData = {
+            user_id:req.body.user_id,
+            contact_name:'farah',
+            contact_number:'017546',
+            contact_email:'jacos.hr@gmail.com',
+            contact_owner:req.body.contact_owner
+        };
+
+        try {
+            let sql2 = 'INSERT INTO user_phonebook SET ? ON DUPLICATE KEY UPDATE contact_name=contact_name,contact_number=contact_number';
+//        db.query(sql, [json2array(req.body)], function (error, results) {
+            db.query(sql2, PhoneBookData, function (error, results) {
+                if (error) throw error;
+
+                res.send({
+                    message:"OK"
+                });
+
+            });
+        } catch (error) {
+            logger.info("addUserPhoneBook error: " + error);
+            res.send({
+                message:"NG"
+            });
+        }
+
+//    }
+});
+
+app.post('/add_contacts/:contacts_owner', function (req, res) {
+
+
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    logger.info("add_contacts request owner: " + req.params.contacts_owner);
+    // logger.info("add_contacts request body: " + JSON.stringify(req.body));
+
+    try {
+        let sql = 'INSERT INTO contacts(contact_group_flag,contact_id,contact_kana,contact_mail,contact_memo,contact_name,contact_owner,contact_telnum,contact_use_count) VALUES ? ON DUPLICATE KEY UPDATE contact_id=VALUES(contact_id),contact_name=VALUES(contact_name),contact_mail=VALUES(contact_mail),contact_group_flag=VALUES(contact_group_flag),contact_use_count=VALUES(contact_use_count),contact_kana=VALUES(contact_kana),contact_memo=VALUES(contact_memo)';
+        db.query(sql, [json2array(req.body)], function (error, results) {
+            if (error) throw error;
+
+            res.send({
+                message: "OK"
+            });
+
+        });
+    } catch (error) {
+        logger.info("error: " + error);
+        res.send({
+            message: "NG"
+        });
+    }
+
+
+});
+app.get('/get_last_updated_time/:contacts_owner', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    logger.info("get_last_updated_time request owner: " + req.params.contacts_owner);
+    try {
+        let sql = 'SELECT * FROM contacts WHERE contact_owner = ? ORDER BY updated_time DESC LIMIT 1';
+        db.query(sql, req.params.contacts_owner, function (error, results) {
+            if (error) throw error;
+            if (results.length > 0) {
+                res.send({
+                    updated_time: results[0]["updated_time"]
+                });
+            } else {
+                res.send({
+                    updated_time: "NG"
+                });
+            }
+
+        });
+    } catch (error) {
+        logger.info("error: " + error);
+        res.send({
+            updated_time: "NG"
+        });
+    }
+});
+app.get('/get_all_contacts/:contacts_owner', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    logger.info("get_all_contacs request owner: " + req.params.contacts_owner);
+
+    try {
+        let sql = 'SELECT * FROM contacts WHERE contact_owner = ?';
+        db.query(sql, req.params.contacts_owner, function (error, results) {
+            if (error) throw error;
+            res.send({
+                message: "OK",
+                contacts: results
+            });
+
+        });
+    } catch (error) {
+        logger.info("error: " + error);
+        res.send({
+            message: "NG"
+        });
+    }
+
+
+});
+
+
+
+function json2array(json) {
+    var result = [];
+    var keys = Object.keys(json);
+    keys.forEach(function (key) {
+        result.push(json2array2nd(json[key]));
+    });
+    return result;
+}
+
+function json2array2nd(json) {
+    var result = [];
+    var keys = Object.keys(json);
+    keys.forEach(function (key) {
+        result.push(json[key]);
+    });
+    return result;
+}
