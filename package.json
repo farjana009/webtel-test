@@ -5,6 +5,7 @@
   "main": "client.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "worker": "node client.js",
     "start": "node client.js"
   },
   "author": "rasel",
