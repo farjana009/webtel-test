@@ -109,22 +109,22 @@ const httpsServerNext = https.createServer(serverConfig, app);
 
 
 
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Rasel#22386779',
-    database: 'free_call',
-    timezone: 'utc'
-
-});
-
-
-db.connect((err) => {
-    if (err) {
-    throw err;
-}
-logger.info('mysql connected....');
-});
+//const db = mysql.createConnection({
+//    host: 'localhost',
+//    user: 'root',
+//    password: 'Rasel#22386779',
+//    database: 'free_call',
+//    timezone: 'utc'
+//
+//});
+//
+//
+//db.connect((err) => {
+//    if (err) {
+//    throw err;
+//}
+//logger.info('mysql connected....');
+//});
 
 httpsServerNext.listen(3000, () => {
     logger.info('server started at port 3000');
@@ -681,219 +681,3 @@ app.use(bodyParser.json());
 app.use(cors());
 
 
-app.get('/get_all_users/:contacts_owner', function (req, res) {
-
-
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    logger.info("get_all_users request owner: " + req.params.contacts_owner);
-
-    let sql = 'SELECT * FROM free_call.users UNION SELECT id As idusers, contact_name As name, REPLACE(contact_telnum,"-","") As mobile_number,contact_mail As mail FROM free_call.contacts where contact_owner=?';
-    db.query(sql, req.params.contacts_owner,function (error, results) {
-        if (error) throw error;
-        potaconFreeCallUsers = results;
-        res.send(results);
-
-    });
-});
-
-app.post('/addUser', function (req, res) {
-
-
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    //  console.log("check it .."+JSON.stringify(req.body));
-    let post = {
-        name: req.body["name"],
-        mobile_number: req.body["mobile_number"],
-        mail: "jacos.hr@gmail.com"
-    };
-    let sql = 'INSERT INTO users SET ?';
-    db.query(sql, post, function (error, results) {
-        if (error) throw error;
-
-        res.send("ok");
-
-    });
-
-
-
-});
-
-app.post('/checkUserExistInDb', function (req, res) {
-
-//    let user_exist=[];
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    //  console.log("check it .."+JSON.stringify(req.body));
-//    let post1 = {
-//        mobile_number:req.body["mobile_number"]
-//    };
-    var mobile_number=req.body.mobile_number;
-    try {
-        let sql1 = 'SELECT * FROM users WHERE mobile_number = '+mysql.escape(mobile_number);
-        db.query(sql1, [mobile_number], function (error, results) {
-            if (error) throw error;
-            if (results.length > 0) {
-
-//        res.send("ok");
-            res.json({
-                message:"user exist",
-                user_exist:results[0]["idusers"]
-            });
-            }else{
-                res.json({
-                    message:"user not exist",
-                    user_exist:"NO"
-                });
-            }
-
-        });
-
-    } catch (error) {
-        logger.info("error: " + error);
-        res.json({
-            message:"NG"
-        });
-    }
-
-});
-
-app.post('/addUserPhoneBook', function (req, res) {
-
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    logger.info("addUserPhoneBook request owner: " + req.body.contact_owner);
-//    console.log("addUserPhoneBook request body: " + JSON.stringify(req.body));
-
-
-//    var PhoneBookData = [];
-
-//    for (let i = 0; i < req.body.company_contacts.length; i++) {
-//        PhoneBookData.push(new Array(req.body["user_id"], req.body["company_contacts"][i].name, req.body["company_contacts"][i].tel, req.body["contact_email"],req.body["contact_owner"]));
-        let PhoneBookData = {
-            user_id:req.body.user_id,
-            contact_name:'farah',
-            contact_number:'017546',
-            contact_email:'jacos.hr@gmail.com',
-            contact_owner:req.body.contact_owner
-        };
-
-        try {
-            let sql2 = 'INSERT INTO user_phonebook SET ? ON DUPLICATE KEY UPDATE contact_name=contact_name,contact_number=contact_number';
-//        db.query(sql, [json2array(req.body)], function (error, results) {
-            db.query(sql2, PhoneBookData, function (error, results) {
-                if (error) throw error;
-
-                res.send({
-                    message:"OK"
-                });
-
-            });
-        } catch (error) {
-            logger.info("addUserPhoneBook error: " + error);
-            res.send({
-                message:"NG"
-            });
-        }
-
-//    }
-});
-
-app.post('/add_contacts/:contacts_owner', function (req, res) {
-
-
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    logger.info("add_contacts request owner: " + req.params.contacts_owner);
-    // logger.info("add_contacts request body: " + JSON.stringify(req.body));
-
-    try {
-        let sql = 'INSERT INTO contacts(contact_group_flag,contact_id,contact_kana,contact_mail,contact_memo,contact_name,contact_owner,contact_telnum,contact_use_count) VALUES ? ON DUPLICATE KEY UPDATE contact_id=VALUES(contact_id),contact_name=VALUES(contact_name),contact_mail=VALUES(contact_mail),contact_group_flag=VALUES(contact_group_flag),contact_use_count=VALUES(contact_use_count),contact_kana=VALUES(contact_kana),contact_memo=VALUES(contact_memo)';
-        db.query(sql, [json2array(req.body)], function (error, results) {
-            if (error) throw error;
-
-            res.send({
-                message: "OK"
-            });
-
-        });
-    } catch (error) {
-        logger.info("error: " + error);
-        res.send({
-            message: "NG"
-        });
-    }
-
-
-});
-app.get('/get_last_updated_time/:contacts_owner', function (req, res) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    logger.info("get_last_updated_time request owner: " + req.params.contacts_owner);
-    try {
-        let sql = 'SELECT * FROM contacts WHERE contact_owner = ? ORDER BY updated_time DESC LIMIT 1';
-        db.query(sql, req.params.contacts_owner, function (error, results) {
-            if (error) throw error;
-            if (results.length > 0) {
-                res.send({
-                    updated_time: results[0]["updated_time"]
-                });
-            } else {
-                res.send({
-                    updated_time: "NG"
-                });
-            }
-
-        });
-    } catch (error) {
-        logger.info("error: " + error);
-        res.send({
-            updated_time: "NG"
-        });
-    }
-});
-app.get('/get_all_contacts/:contacts_owner', function (req, res) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    logger.info("get_all_contacs request owner: " + req.params.contacts_owner);
-
-    try {
-        let sql = 'SELECT * FROM contacts WHERE contact_owner = ?';
-        db.query(sql, req.params.contacts_owner, function (error, results) {
-            if (error) throw error;
-            res.send({
-                message: "OK",
-                contacts: results
-            });
-
-        });
-    } catch (error) {
-        logger.info("error: " + error);
-        res.send({
-            message: "NG"
-        });
-    }
-
-
-});
-
-
-
-function json2array(json) {
-    var result = [];
-    var keys = Object.keys(json);
-    keys.forEach(function (key) {
-        result.push(json2array2nd(json[key]));
-    });
-    return result;
-}
-
-function json2array2nd(json) {
-    var result = [];
-    var keys = Object.keys(json);
-    keys.forEach(function (key) {
-        result.push(json[key]);
-    });
-    return result;
-}
