@@ -704,5 +704,5 @@ function json2array2nd(json) {
     return result;
 }
 
-app.use(express.static(__dirname + '/index.html'));
+app.use(express.static(__dirname + 'index.html'));
 //app.use(express.static(path.join(__dirname,'front')));
