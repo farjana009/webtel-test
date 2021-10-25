@@ -2,8 +2,8 @@
   "name": "ポタコン",
   "short_name": "ポタコン",
   "display": "minimal-ui",
-  "start_url": "/rtc/index.html",
-  "scope": "/rtc/*",
+  "start_url": "index.html",
+  "scope": "*",
   "theme_color": "#673ab6",
   "background_color": "#111111",
   "icons": [
