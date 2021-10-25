@@ -43,7 +43,7 @@ transports: [
 ]
 });
 
-var bodyParser = require('body-parser');
+//var bodyParser = require('body-parser');
 
 
 // Yes, TLS is required
@@ -720,10 +720,10 @@ function sendMailToUser(mail, name) {
 }
 
 // configure the app to use bodyParser()
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-app.use(bodyParser.json());
-app.use(cors());
+//app.use(bodyParser.urlencoded({
+//    extended: true
+//}));
+//app.use(bodyParser.json());
+//app.use(cors());
 
 
