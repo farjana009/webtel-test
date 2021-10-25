@@ -46,8 +46,8 @@ var bodyParser = require('body-parser');
 
 // Yes, TLS is required
 const serverConfig = {
-    key: fs.readFileSync('key.pem'),
-    cert: fs.readFileSync('cert.pem'),
+    key: fs.readFileSync('key.pem')
+   // cert: fs.readFileSync('cert.pem'),
 };
 
 //var serviceAccount = require("firebase.json");
