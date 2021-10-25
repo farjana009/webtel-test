@@ -8,6 +8,8 @@ const app = express();
 const JSON = require('circular-json');
 //const mysql = require('mysql');
 const winston = require('winston');
+var path = require('path');
+
 var cors = require('cors');
 const WebSocketServer = WebSocket.Server;
 //var admin = require('firebase-admin');
@@ -131,10 +133,6 @@ var onlineUsers = [];
 //    logger.info('server started at port 3000');
 //});
 
-var port = process.env.PORT || 3000;
-app.listen(port, () => {
-    logger.info('Our app is running on port ${ port }');
-});
 
 //when a user connects to our sever
 wss.on('connection', function (connection) {
@@ -686,8 +684,12 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(cors());
 
+//app.get('/', function(req, res) {
+//    res.send( "working" );
+//});
+
 app.get('/', function(req, res) {
-    res.send( "working" );
+    res.sendFile( path.resolve('index.html') );
 });
 
 function json2array(json) {
@@ -710,3 +712,8 @@ function json2array2nd(json) {
 
 //app.use(express.static('index.html'));
 //app.use(express.static(path.join(__dirname,'front')));
+
+var port = process.env.PORT || 3000;
+app.listen(port, () => {
+    logger.info('Our app is running on port ${ port }');
+});
