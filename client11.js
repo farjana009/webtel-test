@@ -1249,40 +1249,6 @@ function logInUser() {
 //setTimeout(getOnlineUsers, 1500);
 
 
-function getOnlineUsers() {
-    $.get('https://webtel.dev.jacos.jp:9090/data', {}, function (data) {
-        console.log("checking:   " + data);
-        var a = data;
-        a = a.replace(/'/g, '"');
-        a = JSON.parse(a);
-
-
-        document.getElementById("09088772581").style.backgroundColor = "#26a69a";
-        document.getElementById("09042471470").style.backgroundColor = "#26a69a";
-        document.getElementById("09044594679").style.backgroundColor = "#26a69a";
-        document.getElementById("09065247478").style.backgroundColor = "#26a69a";
-        document.getElementById("09065680562").style.backgroundColor = "#26a69a";
-        document.getElementById("01851115865").style.backgroundColor = "#26a69a";
-        document.getElementById("01822274799").style.backgroundColor = "#26a69a";
-        document.getElementById("01713084549").style.backgroundColor = "#26a69a";
-
-        try {
-            for (var i = 0; i < a.length; i++) {
-                try {
-                    document.getElementById(a[i]).style.backgroundColor = "red";
-                } catch (error) {
-                    console.log("checking:  exception eee " + error);
-                }
-
-            }
-
-        } catch (error) {
-            console.log("checking:  exception " + error);
-
-        }
-
-    });
-}
 
 function directMakeCall(number) {
 
@@ -1546,21 +1512,7 @@ document.addEventListener("visibilitychange", function () {
         var user = urlParam('user_mobile_number');
 
 
-        $.get('https://webtel.dev.jacos.jp:9090/data', {}, function (data) {
 
-            var a = data;
-            a = a.replace(/'/g, '"');
-            a = JSON.parse(a);
-
-            if (a.includes(user)) {
-
-            } else {
-                reloadTag = 10;
-                location.reload(true);;
-            }
-
-
-        });
 
     }
 });
@@ -1604,120 +1556,6 @@ function callThisUser() {
 }
 
 
-function addSingleUserDB(name, number) {
-    $.ajax({
-
-        type:"POST",
-        url:"https://webtel.dev.jacos.jp:3000/checkUserExistInDb", //https://webtel.dev.jacos.jp:3000/addUser
-        dataType:'text',
-        contentType:"application/x-www-form-urlencoded",
-        data:{
-            mobile_number:number
-        },
-        success:function (data) {
-            var all_user_info = JSON.parse(data);
-            console.log("user id ===="+all_user_info.user_exist);//die();
-            var user_info = all_user_info.user_exist;
-            if (user_info!='NO') {
-                console.log('user already exist.');
-                localStorage.setItem("userId", all_user_info.user_exist);
-                console.log("localStorage user id ===="+localStorage.getItem("userId"));
-
-
-                let myContact = {
-                    name:name,
-                    number:number
-                }
-                localStorage.setItem("myNumber", JSON.stringify(myContact));
-                location.href = '?user_mobile_number=' + number;
-            } else {
-                setTimeout(function () {
-                    $.ajax({
-
-                        type:"POST",
-                        url:"https://webtel.dev.jacos.jp:3000/addUser", //https://webtel.dev.jacos.jp:3000/addUser
-                        dataType:'text',
-                        contentType:"application/x-www-form-urlencoded",
-                        data:{
-
-                            name:name,
-                            mobile_number:number
-
-
-                        },
-                        success:function (data) {
-//                    console.log(data);die();
-                            document.getElementById("userNameToAdd").value = "";
-
-                            document.getElementById("userNumberToAdd").value = "";
-                                    $("#divForAllValues").empty();
-//                                    allUsers = null;
-//                                    getAllUsersFunction();
-                                    $('#mymodal33').modal('close');
-
-                            let myContact = {
-                                name:name,
-                                number:number
-                            }
-                            localStorage.setItem("myNumber", JSON.stringify(myContact));
-                            location.href = '?user_mobile_number=' + number;
-                            localStorage.setItem("userId", data.user_id);
-                        },
-
-
-                        error:function (errordata) {
-                            console.log('failure addUser');
-                        }
-
-
-                    });
-                }, 1000);
-            }
-
-
-        },
-
-
-        error:function (errordata) {
-            console.log('failure checkUserExistInDb');
-        }
-
-
-    });
-
-//    $.ajax({
-//
-//        type: "POST",
-//        url: "https://webtel.dev.jacos.jp:3000/addUser",
-//        dataType: 'text',
-//        contentType: "application/x-www-form-urlencoded",
-//        data: {
-//
-//            name: userName,
-//            mobile_number: userNumber,
-//
-//
-//        },
-//        success: function (data) {
-//            document.getElementById("userNameToAdd").value = "";
-//
-//            document.getElementById("userNumberToAdd").value = "";
-//            $("#divForAllValues").empty();
-//            allUsers = null;
-//            getAllUsersFunction();
-//            $('#mymodal33').modal('close');
-//
-//
-//        },
-//
-//
-//        error: function (errordata) {
-//            alert('failure');
-//        }
-//
-//
-//    });
-}
 
 
 function showModalForAddUser() {
