@@ -10,7 +10,7 @@ const mysql = require('mysql');
 const winston = require('winston');
 var cors = require('cors');
 const WebSocketServer = WebSocket.Server;
-var admin = require('firebase-admin');
+//var admin = require('firebase-admin');
 var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -210,31 +210,9 @@ wss.on('connection', function (connection) {
 
                 }
                 logger.info("send ringing push : " + data.name);
-                //fcm start
-                var options = {
-                    priority: 'high',
-                    timeToLive: 60 * 1
-                };
-                var messageFCM = {
-                    data: {
-                        text: "text",
-                        title: "",
-                        priority: "high",
-                        type: "ringing",
-                        callername: data.requesterName,
-                        callernumber: data.requesterMobile,
-                        mynumber: data.name
-                    }
-                };
 
-                admin.messaging().sendToTopic(data.name, messageFCM, options)
-                    .then((response) => {
-                    // Response is a message ID string.
-                    console.log('Successfully sent message:', response);
-        })
-        .catch((error) => {
-            console.log('Error sending message:', error);
-    });
+
+
 
     //fcm end
 
@@ -524,30 +502,9 @@ wss.on('connection', function (connection) {
 
         logger.info("send ringingCancel push : " + data.name);
         //fcm start
-        var optionsOff = {
-            priority: 'high',
-            timeToLive: 60 * 1
-        };
-        var messageFCMOff = {
-            data: {
-                text: "text",
-                title: "",
-                priority: "high",
-                type: "cancelRing",
-                callername: "",
-                callernumber: "",
-                mynumber: data.name
-            }
-        };
 
-        admin.messaging().sendToTopic(data.name, messageFCMOff, optionsOff)
-            .then((response) => {
-            // Response is a message ID string.
-            console.log('Successfully sent message:', response);
-    })
-    .catch((error) => {
-        console.log('Error sending message:', error);
-});
+
+
 
 //fcm end
 
