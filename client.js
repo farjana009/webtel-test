@@ -46,7 +46,7 @@ var bodyParser = require('body-parser');
 
 // Yes, TLS is required
 const serverConfig = {
-    key: fs.readFileSync('key.pem')
+    key: fs.readFileSync('privkey.pem')
    // cert: fs.readFileSync('cert.pem'),
 };
 
