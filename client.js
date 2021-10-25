@@ -105,7 +105,7 @@ var onlineUsers = [];
 //send users to client
 
 
-const httpsServerNext = https.createServer(serverConfig, app);
+//const httpsServerNext = https.createServer(serverConfig, app);
 
 
 
@@ -126,8 +126,13 @@ const httpsServerNext = https.createServer(serverConfig, app);
 //logger.info('mysql connected....');
 //});
 
-httpsServerNext.listen(3000, () => {
-    logger.info('server started at port 3000');
+//httpsServerNext.listen(3000, () => {
+//    logger.info('server started at port 3000');
+//});
+
+var port = process.env.PORT || 3000;
+app.listen(port, "0.0.0.0", function() {
+    logger.info("Listening on Port 3000");
 });
 
 //when a user connects to our sever
