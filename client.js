@@ -52,11 +52,11 @@ var bodyParser = require('body-parser');
 //    cert: fs.readFileSync('/etc/letsencrypt/live/webtel.jacos-cloud.com/fullchain.pem'),
 //};
 
-var serviceAccount = require("/var/www/html/rtc/firebase.json");
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://jacosphone.firebaseio.com"
-});
+//var serviceAccount = require("/var/www/html/rtc/firebase.json");
+//admin.initializeApp({
+//    credential: admin.credential.cert(serviceAccount),
+//    databaseURL: "https://jacosphone.firebaseio.com"
+//});
 var userIsBusy;
 
 
