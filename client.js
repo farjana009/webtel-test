@@ -132,8 +132,8 @@ var onlineUsers = [];
 //});
 
 var port = process.env.PORT || 3000;
-app.listen(port, function() {
-    logger.info("Listening on Port 3000");
+app.listen(port, () => {
+    logger.info('Our app is running on port ${ port }');
 });
 
 //when a user connects to our sever
@@ -704,5 +704,5 @@ function json2array2nd(json) {
     return result;
 }
 
-app.use(express.static(__dirname + 'index.html'));
+app.use(express.static('index.html'));
 //app.use(express.static(path.join(__dirname,'front')));
