@@ -686,6 +686,10 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(cors());
 
+app.get('/', function(req, res) {
+    res.sendFile( path.resolve('index.html') );
+});
+
 function json2array(json) {
     var result = [];
     var keys = Object.keys(json);
@@ -704,5 +708,5 @@ function json2array2nd(json) {
     return result;
 }
 
-app.use(express.static('index.html'));
+//app.use(express.static('index.html'));
 //app.use(express.static(path.join(__dirname,'front')));
