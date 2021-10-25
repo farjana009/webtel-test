@@ -692,6 +692,8 @@ app.use(cors());
 //app.use(express.static(path.join(__dirname, '/view')));
 
 app.use(express.static(__dirname + '/css/'));
+app.use(express.static(__dirname + '/js/'));
+app.use(express.static(__dirname + '/view/'));
 
 app.get('/', function(req, res) {
     res.sendFile( path.resolve('index.html') );
