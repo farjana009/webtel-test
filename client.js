@@ -687,7 +687,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/', function(req, res) {
-    res.sendFile( path.resolve('index.html') );
+    res.send( "working" );
 });
 
 function json2array(json) {
