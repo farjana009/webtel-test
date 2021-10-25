@@ -44,6 +44,7 @@ transports: [
 var bodyParser = require('body-parser');
 
 
+
 // Yes, TLS is required
 const serverConfig = {
     key: fs.readFileSync('privkey.pem'),
@@ -131,7 +132,7 @@ var onlineUsers = [];
 //});
 
 var port = process.env.PORT || 3000;
-app.listen(port, "0.0.0.0", function() {
+app.listen(port, function() {
     logger.info("Listening on Port 3000");
 });
 
@@ -685,4 +686,22 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(cors());
 
+function json2array(json) {
+    var result = [];
+    var keys = Object.keys(json);
+    keys.forEach(function (key) {
+        result.push(json2array2nd(json[key]));
+    });
+    return result;
+}
 
+function json2array2nd(json) {
+    var result = [];
+    var keys = Object.keys(json);
+    keys.forEach(function (key) {
+        result.push(json[key]);
+    });
+    return result;
+}
+
+//app.use(express.static(__dirname + '/public'));
