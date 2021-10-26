@@ -697,7 +697,7 @@ app.use(cors());
 
 
 app.use(express.static('public'));
-app.use(express.static('view'));
+//app.use(express.static('view'));
 app.get('/', function(req, res) {
     res.sendFile( path.resolve('index.html') );
 });
