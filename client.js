@@ -725,10 +725,10 @@ function json2array2nd(json) {
 //app.use(express.static('index.html'));
 //app.use(express.static(path.join(__dirname,'front')));
 
-//var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3000;
 //app.listen(port, () => {
 //    logger.info('Our app is running on port ${ port }');
 //});
-httpsServerNext.listen(3000, () => {
-    logger.info('server started at port 3000');
+httpsServerNext.listen(port, () => {
+    logger.info('Our app is running on port ${ port }');
 });
