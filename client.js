@@ -74,11 +74,6 @@ const handleRequest = function (request, response) {
             'Content-Type': 'text/html'
         });
         response.end(fs.readFileSync('index.html'));
-    }else if (request.url === '/') {
-        response.writeHead(200, {
-            'Content-Type': 'text/javascript'
-        });
-        response.end(fs.readFileSync('index.html'));
     } else if (request.url === 'client11.js') {
         response.writeHead(200, {
             'Content-Type': 'application/javascript'
@@ -113,7 +108,7 @@ var onlineUsers = [];
 //send users to client
 
 
-const httpsServerNext = https.createServer(serverConfig, app);
+//const httpsServerNext = https.createServer(serverConfig, app);
 
 
 
@@ -692,17 +687,17 @@ app.use(cors());
 //app.get('/', function(req, res) {
 //    res.send( "working" );
 //});
-//app.use(express.static(path.join(__dirname, '/css')));
-//app.use(express.static(path.join(__dirname, '/js')));
+app.use(express.static(path.join(__dirname, '/css/')));
+app.use(express.static(path.join(__dirname, '/js/')));
 //app.use(express.static(path.join(__dirname, '/view')));
 
 //app.use(express.static(__dirname + '/css/'));
-//app.use(express.static(__dirname + '/js'));
+//app.use(express.static(__dirname + '/js/'));
 //app.use(express.static(__dirname + '/view/'));
-//
-//app.get('/', function(req, res) {
-//    res.sendFile( path.resolve('index.html') );
-//});
+
+app.get('/', function(req, res) {
+    res.sendFile( path.resolve('index.html') );
+});
 
 function json2array(json) {
     var result = [];
@@ -726,9 +721,6 @@ function json2array2nd(json) {
 //app.use(express.static(path.join(__dirname,'front')));
 
 var port = process.env.PORT || 3000;
-//app.listen(port, () => {
-//    logger.info('Our app is running on port ${ port }');
-//});
-httpsServerNext.listen(port, () => {
+app.listen(port, () => {
     logger.info('Our app is running on port ${ port }');
 });
