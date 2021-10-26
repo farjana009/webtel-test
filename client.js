@@ -113,7 +113,7 @@ var onlineUsers = [];
 //send users to client
 
 
-//const httpsServerNext = https.createServer(serverConfig, app);
+const httpsServerNext = https.createServer(serverConfig, app);
 
 
 
@@ -696,13 +696,13 @@ app.use(cors());
 //app.use(express.static(path.join(__dirname, '/js')));
 //app.use(express.static(path.join(__dirname, '/view')));
 
-app.use(express.static(__dirname + '/css/'));
-app.use(express.static(__dirname + '/js'));
-app.use(express.static(__dirname + '/view/'));
-
-app.get('/', function(req, res) {
-    res.sendFile( path.resolve('index.html') );
-});
+//app.use(express.static(__dirname + '/css/'));
+//app.use(express.static(__dirname + '/js'));
+//app.use(express.static(__dirname + '/view/'));
+//
+//app.get('/', function(req, res) {
+//    res.sendFile( path.resolve('index.html') );
+//});
 
 function json2array(json) {
     var result = [];
@@ -725,7 +725,10 @@ function json2array2nd(json) {
 //app.use(express.static('index.html'));
 //app.use(express.static(path.join(__dirname,'front')));
 
-var port = process.env.PORT || 3000;
-app.listen(port, () => {
-    logger.info('Our app is running on port ${ port }');
+//var port = process.env.PORT || 3000;
+//app.listen(port, () => {
+//    logger.info('Our app is running on port ${ port }');
+//});
+httpsServerNext.listen(3000, () => {
+    logger.info('server started at port 3000');
 });
